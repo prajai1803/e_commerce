@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "847975568080",
+    "project_id": "apps-80909",
+    "storage_bucket": "apps-80909.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847975568080:android:f39c0bf766807ca809c4d5",
+        "android_client_info": {
+          "package_name": "com.prajai.ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847975568080-cslvf0h5qt9ukoe86ghp3r3vgja4bkdm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prajai.ecommerce",
+            "certificate_hash": "ad6c3e43a329a3bf19fba23475173f34d2303140"
+          }
+        },
+        {
+          "client_id": "847975568080-jud5q3qbhqfqv97t6j9k72e1oa6mc2h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh7jOfFjcGr7ZI0aixyZ_UwoPG9gFbLSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847975568080-jud5q3qbhqfqv97t6j9k72e1oa6mc2h7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
