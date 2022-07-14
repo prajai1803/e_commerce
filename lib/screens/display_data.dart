@@ -10,6 +10,13 @@ class APIDataShow extends StatefulWidget {
 }
 
 class _APIDataShowState extends State<APIDataShow> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData();
+  }
+
   var check = false;
   @override
   Widget build(BuildContext context) {
@@ -18,40 +25,42 @@ class _APIDataShowState extends State<APIDataShow> {
         title: Text("API Data "),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: fetchData,
-              child: Text("Fetch Data"),
+        child: SizedBox(
+          height: 500,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                check
+                    ? FutureBuilder(
+                        future: getData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<ApiData> dData =
+                                snapshot.data as List<ApiData>;
+                            return Column(
+                              children: dData
+                                  .map(
+                                    (e) => Card(
+                                      child: Column(
+                                        children: [
+                                          Text(e.title),
+                                          Text(e.description),
+                                          Image.network(e.thumbnail)
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        })
+                    : CircularProgressIndicator(),
+              ],
             ),
-            check
-                ? FutureBuilder(
-                    future: getData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<ApiData> dData = snapshot.data as List<ApiData>;
-                        return Column(
-                          children: dData
-                              .map(
-                                (e) => Card(
-                                  child: Column(
-                                    children: [
-                                      Text(e.title),
-                                      Text(e.description),
-                                      Image.network(e.thumbnail)
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    })
-                : CircularProgressIndicator(),
-          ],
+          ),
         ),
       ),
     );
