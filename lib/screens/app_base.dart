@@ -1,4 +1,6 @@
+import 'package:e_commerce/screens/home2.dart';
 import 'package:e_commerce/screens/home_page.dart';
+import 'package:e_commerce/screens/favorite.dart';
 import 'package:flutter/material.dart';
 
 class Appbase extends StatefulWidget {
@@ -13,6 +15,7 @@ class _AppbaseState extends State<Appbase> {
 
   final screens = [
     HomePage(),
+    Favorite(),
   ];
 
   @override
@@ -38,9 +41,10 @@ class _AppbaseState extends State<Appbase> {
               label: "Favorite",
               activeIcon: Icon(Icons.favorite)),
           BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard_outlined),
-              label: "Card",
-              activeIcon: Icon(Icons.card_giftcard)),
+            icon: Icon(Icons.shopping_cart_checkout_outlined),
+            label: "Card",
+            activeIcon: Icon(Icons.shopping_cart),
+          )
         ],
       ),
       body: screens[currentIndex],

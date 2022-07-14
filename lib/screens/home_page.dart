@@ -1,6 +1,8 @@
 import 'package:e_commerce/widgets/categories_circle_avatar.dart';
 import 'package:e_commerce/widgets/trending_card.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum Menu { itemOne, itemTwo, itemThree, itemFour }
 
@@ -14,13 +16,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> _userstream =
+        FirebaseFirestore.instance.collection('Product').snapshots();
+    final Stream<QuerySnapshot> _category =
+        FirebaseFirestore.instance.collection('Category').snapshots();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 40,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         elevation: 0,
         backgroundColor: Colors.white,
@@ -65,10 +73,26 @@ class _HomePageState extends State<HomePage> {
               height: 110,
               child: Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) => CategoriesCircleAvatar()),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: _category,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Wrogn");
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text("Loading...");
+                      }
+                      return ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> data =
+                              document.data()! as Map<String, dynamic>;
+                          return CategoriesCircleAvatar(
+                              name: data['name'], image: data['image']);
+                        }).toList(),
+                      );
+                    }),
               ),
             ),
             Row(
@@ -76,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 20, bottom: 20),
+                  padding: const EdgeInsets.only(top: 20, left: 20, bottom: 0),
                   child: Text(
                     "New In",
                     style: TextStyle(fontSize: 26, fontFamily: "Robota"),
@@ -98,14 +122,34 @@ class _HomePageState extends State<HomePage> {
               height: 300,
               child: Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) => TrendingCard()),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: _userstream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Wrogn");
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text("Loading...");
+                      }
+                      return ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> data =
+                              document.data()! as Map<String, dynamic>;
+                          return TrendingCard(
+                            name: data['name'],
+                            price: data['price'],
+                            image: data['image'],
+                          );
+                        }).toList(),
+                      );
+                    }),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
+              padding:
+                  EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 30),
               child: _searchBar(),
             ),
           ],

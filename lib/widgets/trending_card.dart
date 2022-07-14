@@ -2,7 +2,17 @@ import 'package:e_commerce/screens/product_view.dart';
 import 'package:flutter/material.dart';
 
 class TrendingCard extends StatefulWidget {
-  const TrendingCard({Key? key}) : super(key: key);
+  final name;
+  final price;
+  final image;
+  final discription;
+  TrendingCard({
+    Key? key,
+    required this.name,
+    required this.price,
+    required this.image,
+    this.discription,
+  }) : super(key: key);
 
   @override
   State<TrendingCard> createState() => _TrendingState();
@@ -30,9 +40,8 @@ class _TrendingState extends State<TrendingCard> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30)),
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              'https://avatars.githubusercontent.com/u/73019477?v=4'))),
+                      image:
+                          DecorationImage(image: NetworkImage(widget.image))),
                 ),
                 Positioned(
                   child: IconButton(
@@ -55,17 +64,18 @@ class _TrendingState extends State<TrendingCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Rs 1800",
+                        widget.price.toString(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           fontFamily: "Inika",
                         ),
                       ),
-                      Text("Indo-Western Black"),
+                      Text(widget.name),
                     ],
                   ),
                   FloatingActionButton(
+                    heroTag: "f",
                     onPressed: () {},
                     foregroundColor: Colors.transparent,
                     backgroundColor: Colors.white,
